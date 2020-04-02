@@ -4,6 +4,11 @@
 */
 
 #include "server.h"
+#include "constants.h"
+#include "utils/url-parser.cpp"
+
+extern void handleRoute(int client_sock, std::string const & url);
+extern std::string parseUrl(std::string reqStr);
 
 /**
  * @brief Initialize TCP socket / SOCK_STREAM on the server 
@@ -29,28 +34,45 @@ static void initializeServer(unsigned int port, unsigned int max_client) {
 
     // Bind sockets with port
     if (bind(server_sock, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) {
-        die(__LINE__, "Unable to bine socket on port %s", port);
+        die(__LINE__, "Unable to bine socket on port %u", port);
     }
 
     // Listen on the socket
     if (listen(server_sock, max_client) < 0) {
-        die(__LINE__, "Unable to listen on socket on port %s", port);
+        die(__LINE__, "Unable to listen on socket on port %u", port);
+    } else {
+        printf("Server started on port %u \n", port);
     }
 
-    // Accept client requests
-    struct sockaddr_in client_addr;
-    socklen_t client_addr_size = sizeof(client_addr);
-    int client_sock = accept(server_sock, (struct sockaddr *) &client_addr, &client_addr_size);
-    if (client_sock < 0) {
-        die(__LINE__, "Unable to accept client request");
+    // Forever listen for requests until being interrupted
+    while(1) {
+        // Accept client requests
+        struct sockaddr_in client_addr;
+        socklen_t client_addr_size = sizeof(client_addr);
+        int client_sock = accept(server_sock, (struct sockaddr *) &client_addr, &client_addr_size);
+        if (client_sock < 0) {
+            die(__LINE__, "Unable to accept client request");
+        }
+
+        // Receive data from client
+        std::string requestStr;
+        requestStr.resize(BUF_SIZE);
+        recv(client_sock, &requestStr[0], BUF_SIZE, 0);
+
+        // Send data to client
+        std::string res =
+            "HTTP/1.1 200 OK\r\n"
+            "Content-Type: text/html; charset=gbk\r\n"
+            "Connection: close\r\n"
+            "\r\n";
+        send(client_sock, res.c_str(), res.length(), 0);
+        handleRoute(client_sock, parseUrl(requestStr));
+
+        // Close the client socket
+        close(client_sock);
     }
 
-    // After connected, send data to client
-    char str[] = "Hello";
-    write(client_sock, str, sizeof(str));
-
-    // Close the sockets
-    close(client_sock);
+    // Close the server socket
     close(server_sock);
 }
 
