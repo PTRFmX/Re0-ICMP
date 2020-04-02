@@ -4,7 +4,7 @@
 */
 
 #include "server.h"
-#include "constants.h"
+#include "constants/constants.h"
 #include "utils/url-parser.cpp"
 
 extern void handleRoute(int client_sock, std::string const & url);

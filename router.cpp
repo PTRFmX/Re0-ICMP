@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include "server.h"
-#include "constants.h"
+#include "constants/constants.h"
 
 void handleHomePage(int client_sock) {
     char res_msg[] = "Welcome";

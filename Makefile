@@ -12,7 +12,7 @@ $(EXE) : $(OBJS)
 	$(CC) -o $@ $(OBJS)
 
 server.o : server.cpp router.o
-router.o : router.cpp server.h constants.h
+router.o : router.cpp server.h constants/constants.h
 
 clean :
 	rm $(EXE)
