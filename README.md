@@ -16,5 +16,5 @@ make
 Should have an executable 're0icmp' generated
 Then run
 ```
-sudo ./re0icmp [HOST or IP address]
+sudo ./re0icmp [Domain or IP address]
 ```
