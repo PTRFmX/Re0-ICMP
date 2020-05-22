@@ -4,15 +4,15 @@
 # Defines the make commands that compile/clean specific targets
 #
 
-EXE = server.out
-OBJS = server.o router.o
+EXE = re0icmp
+OBJS = main.o icmp.o
 CC = g++
 
 $(EXE) : $(OBJS)
 	$(CC) -o $@ $(OBJS)
 
-server.o : server.cpp router.o
-router.o : router.cpp server.h constants/constants.h
+icmp.o : icmp.cpp icmp.hpp
+main.o : main.cpp icmp.cpp icmp.hpp
 
 clean :
 	rm $(EXE)

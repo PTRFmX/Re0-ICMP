@@ -1,19 +1,23 @@
-#ifndef LOCALHOST
-#define LOCALHOST "127.0.0.1"
+#ifndef ICMP_ECHO 
+#define ICMP_ECHO 8
 #endif
 
-#ifndef DEFAULT_PORT
-#define DEFAULT_PORT 8888
-#endif
-
-#ifndef DEFAULT_MAX_CLIENT
-#define DEFAULT_MAX_CLIENT 20
-#endif
-
-#ifndef PORT_EXP_LIMIT
-#define PORT_EXP_LIMIT 16
+#ifndef ICMP_ECHOREPLY
+#define ICMP_ECHOREPLY 0
 #endif
 
 #ifndef BUF_SIZE
-#define BUF_SIZE 4096
+#define BUF_SIZE 1024
+#endif
+
+#ifndef NUM
+#define NUM   10
+#endif
+
+#ifndef MLN
+#define MLN 1000000
+#endif
+
+#ifndef THD
+#define THD 1000
 #endif
